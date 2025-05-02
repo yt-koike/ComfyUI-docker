@@ -1,5 +1,5 @@
 services:
-  comfyui_standalone:
+  comfyui:
     build:
       context: .
       dockerfile: Dockerfile
