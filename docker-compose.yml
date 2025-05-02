@@ -1,0 +1,15 @@
+services:
+  comfyui_standalone:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./models:/ComfyUI/models
+      - ./output:/ComfyUI/output
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [ gpu ]
+    ports:
+      - "8188:8188"
