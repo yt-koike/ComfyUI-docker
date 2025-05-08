@@ -14,4 +14,4 @@ RUN /ComfyEnv/bin/pip install -r requirements.txt
 # You can optionally install packages for plugins here.
 # RUN apt install -y build-essential libssl-dev libffi-dev python3-dev
 
-CMD ["/ComfyEnv/bin/python3", "main.py", "--listen"]
+CMD ["/ComfyEnv/bin/python3", "/ComfyUI/main.py", "--listen"]
