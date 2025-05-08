@@ -4,6 +4,8 @@ RUN apt update
 RUN apt install -y git python3-pip libgl1-mesa-dev libglib2.0-0 aria2
 RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
+RUN git clone https://github.com/comfyanonymous/ComfyUI /ComfyUI
+
 WORKDIR /ComfyUI
 RUN pip install -r requirements.txt
 
