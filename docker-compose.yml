@@ -6,6 +6,7 @@ services:
     volumes:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
+      - ./custom_nodes:/ComfyUI/custom_nodes
     deploy:
       resources:
         reservations:
