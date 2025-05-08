@@ -9,9 +9,5 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI /ComfyUI
 WORKDIR /ComfyUI
 RUN pip install -r requirements.txt
 
-# install ComfyUI manager (optional)
-WORKDIR /ComfyUI/custom_nodes
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager comfyui-manager
-
 WORKDIR /ComfyUI
 CMD ["python", "main.py", "--listen"]
