@@ -14,4 +14,5 @@ ComfyUI: https://github.com/comfyanonymous/ComfyUI
 
 ## Disclaimer
 
+These Dockerfile and docker-compose.yml are unofficial.
 I do NOT own any source code of ComfyUI.
