@@ -1,18 +1,17 @@
 FROM docker.io/ubuntu:noble
 
-RUN apt update
-RUN apt install -y git python3.12 python3.12-venv libopencv-dev
+RUN apt update; apt install -y git curl libopencv-dev
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
-RUN python3.12 -m venv /ComfyEnv
-RUN /ComfyEnv/bin/pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-RUN /ComfyEnv/bin/pip install opencv-python imageio-ffmpeg
+RUN /root/.local/bin/uv venv --python 3.12
+RUN /root/.local/bin/uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+RUN /root/.local/bin/uv pip install opencv-python imageio-ffmpeg pip
 
 RUN git clone https://github.com/comfyanonymous/ComfyUI /ComfyUI
 
-WORKDIR /ComfyUI
-RUN /ComfyEnv/bin/pip install -r requirements.txt
+RUN /root/.local/bin/uv pip install -r /ComfyUI/requirements.txt
 
 # You can optionally install packages for plugins here.
 # RUN apt install -y build-essential libssl-dev libffi-dev python3-dev
 
-CMD ["/ComfyEnv/bin/python3", "/ComfyUI/main.py", "--listen"]
+CMD ["/root/.local/bin/uv", "run", "/ComfyUI/main.py", "--listen"]
