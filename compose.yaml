@@ -7,7 +7,6 @@ services:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
       - ./user:/ComfyUI/user
-      - ./custom_nodes:/ComfyUI/custom_nodes
     deploy:
       resources:
         reservations:
