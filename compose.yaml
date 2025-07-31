@@ -13,4 +13,4 @@ services:
           devices:
             - capabilities: [ gpu ]
     ports:
-      - "8188:8188"
+      - "8800:8188"
