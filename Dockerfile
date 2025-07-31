@@ -13,4 +13,8 @@ RUN git clone https://github.com/spacepxl/ComfyUI-Depth-Pro.git ComfyUI-Depth-Pr
 RUN git clone https://github.com/Gourieff/ComfyUI-ReActor.git ComfyUI-ReActor/;pip install -r ComfyUI-ReActor/requirements.txt
 RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git ComfyUI-VideoHelperSuite/;pip install -r ComfyUI-VideoHelperSuite/requirements.txt
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
 CMD ["python3", "/ComfyUI/main.py", "--listen"]
