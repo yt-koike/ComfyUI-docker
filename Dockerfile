@@ -6,7 +6,7 @@ RUN pip install -r /ComfyUI/requirements.txt
 
 WORKDIR /ComfyUI/custom_nodes/
 RUN pip install gitpython onnxruntime
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager comfyui-manager/
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager comfyui-manager/;pip install -r comfyui-manager/requirements.txt
 RUN git clone https://github.com/ServiceStack/comfy-asset-downloader.git comfy-asset-downloader/
 RUN git clone https://github.com/kijai/ComfyUI-DepthAnythingV2.git ComfyUI-DepthAnythingV2/;pip install -r ComfyUI-DepthAnythingV2/requirements.txt
 RUN git clone https://github.com/spacepxl/ComfyUI-Depth-Pro.git ComfyUI-Depth-Pro/;pip install -r ComfyUI-Depth-Pro/requirements.txt
