@@ -4,10 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
       - ./user:/ComfyUI/user
-      - ./custom_nodes:/ComfyUI/custom_nodes
     deploy:
       resources:
         reservations:
@@ -15,3 +13,4 @@ services:
             - capabilities: [ gpu ]
     ports:
       - "8188:8188"
+
