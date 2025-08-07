@@ -11,8 +11,10 @@ RUN git clone https://github.com/ltdrdata/ComfyUI-Manager comfyui-manager/;pip i
 RUN git clone https://github.com/AIGODLIKE/ComfyUI-ToonCrafter ComfyUI-ToonCrafter/; pip install -r ComfyUI-ToonCrafter/requirements.txt
 RUN mkdir -p ComfyUI-ToonCrafter/ToonCrafter/checkpoints/tooncrafter_512_interp_v1/
 RUN curl -L https://huggingface.co/Doubiiu/ToonCrafter/resolve/main/model.ckpt -o ComfyUI-ToonCrafter/ToonCrafter/checkpoints/tooncrafter_512_interp_v1/model.ckpt
+RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git ComfyUI-VideoHelperSuite/;pip install -r ComfyUI-VideoHelperSuite/requirements.txt
 
 EXPOSE 8188
 CMD ["python3", "/ComfyUI/main.py", "--listen"]
+
 
 
