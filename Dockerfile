@@ -12,10 +12,7 @@ RUN git clone https://github.com/AIGODLIKE/ComfyUI-ToonCrafter ComfyUI-ToonCraft
 RUN mkdir -p ComfyUI-ToonCrafter/ToonCrafter/checkpoints/tooncrafter_512_interp_v1/
 RUN curl -L https://huggingface.co/Doubiiu/ToonCrafter/resolve/main/model.ckpt -o ComfyUI-ToonCrafter/ToonCrafter/checkpoints/tooncrafter_512_interp_v1/model.ckpt
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-
 EXPOSE 8188
 CMD ["python3", "/ComfyUI/main.py", "--listen"]
+
 
