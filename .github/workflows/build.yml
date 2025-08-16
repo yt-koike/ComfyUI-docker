@@ -34,7 +34,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: my-docker-hub-namespace/my-docker-hub-repository
+          images: l125/comfyui-for-dify:v0.2.3-cu129
 
       - name: Build and push Docker image
         id: push
