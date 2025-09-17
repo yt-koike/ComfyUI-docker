@@ -1,8 +1,10 @@
 services:
-  comfyui:
+  minimal:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.minimal
+      tags:
+        - l125/comfyui-for-dify:0.3.0-minimal
     volumes:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
@@ -12,5 +14,48 @@ services:
         reservations:
           devices:
             - capabilities: [ gpu ]
-    ports:
-      - "8800:8188"
+  cu118:
+    build:
+      context: .
+      dockerfile: Dockerfile.cu118
+      tags:
+        - l125/comfyui-for-dify:0.3.0-cu118
+    volumes:
+      - ./models:/ComfyUI/models
+      - ./output:/ComfyUI/output
+      - ./user:/ComfyUI/user
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [ gpu ]
+  cu129:
+    build:
+      context: .
+      dockerfile: Dockerfile.cu129
+      tags:
+        - l125/comfyui-for-dify:0.3.0-cu129
+    volumes:
+      - ./models:/ComfyUI/models
+      - ./output:/ComfyUI/output
+      - ./user:/ComfyUI/user
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [ gpu ]
+  cpu:
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu
+      tags:
+        - l125/comfyui-for-dify:0.3.0-cpu
+    volumes:
+      - ./models:/ComfyUI/models
+      - ./output:/ComfyUI/output
+      - ./user:/ComfyUI/user
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [ gpu ]
