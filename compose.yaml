@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile.minimal
       tags:
-        - l125/comfyui-for-dify:0.3.0-minimal
+        - l125/comfyui-for-dify:0.3.2-minimal
     volumes:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: Dockerfile.cu118
       tags:
-        - l125/comfyui-for-dify:0.3.0-cu118
+        - l125/comfyui-for-dify:0.3.2-cu118
     volumes:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
@@ -34,7 +34,7 @@ services:
       context: .
       dockerfile: Dockerfile.cu129
       tags:
-        - l125/comfyui-for-dify:0.3.0-cu129
+        - l125/comfyui-for-dify:0.3.2-cu129
     volumes:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
@@ -49,7 +49,7 @@ services:
       context: .
       dockerfile: Dockerfile.cpu
       tags:
-        - l125/comfyui-for-dify:0.3.0-cpu
+        - l125/comfyui-for-dify:0.3.2-cpu
     volumes:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
