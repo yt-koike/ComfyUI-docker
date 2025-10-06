@@ -6,7 +6,7 @@ RUN pip install -r /ComfyUI/requirements.txt
 
 WORKDIR /ComfyUI/custom_nodes/
 RUN git clone https://github.com/ServiceStack/comfy-asset-downloader.git comfy-asset-downloader/
-RUN git clone https://github.com/mit-han-lab/ComfyUI-nunchaku nunchaku_nodes/
+RUN git clone https://github.com/mit-han-lab/ComfyUI-nunchaku nunchaku_nodes/;pip install -r nunchaku_nodes/requirements.txt
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
