@@ -17,4 +17,4 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["comfy", "launch", "--", "--cpu", "--listen"]
+CMD ["python3", "/ComfyUI/main.py", "--listen", "--cpu"]
