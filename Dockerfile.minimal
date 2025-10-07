@@ -1,18 +1,14 @@
 FROM docker.io/python:3.12-slim
 
-RUN apt update; apt install -y git curl libopencv-dev g++ ffmpeg
-RUN pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu129
+RUN apt update; apt install -y git 
+RUN pip install comfy-cli
+RUN yes | comfy --workspace=/ComfyUI install --nvidia --version latest
+RUN comfy tracking disable
 
-RUN curl -sL -o - https://github.com/comfyanonymous/ComfyUI/archive/refs/tags/v0.3.62.tar.gz | tar zxvf - && mv /ComfyUI-0.3.62 /ComfyUI
-RUN pip install -r /ComfyUI/requirements.txt
-
-WORKDIR /ComfyUI/custom_nodes/
-RUN pip install gitpython onnxruntime
-RUN git clone https://github.com/ServiceStack/comfy-asset-downloader.git comfy-asset-downloader/
-RUN git clone https://github.com/mit-han-lab/ComfyUI-nunchaku nunchaku_nodes/
+RUN comfy node install comfy-asset-downloader
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["python3", "/ComfyUI/main.py", "--listen"]
+CMD ["comfy", "launch", "--", "--listen"]

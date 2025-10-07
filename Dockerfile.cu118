@@ -1,20 +1,19 @@
 FROM docker.io/python:3.12-slim
 
-RUN apt update; apt install -y git curl libopencv-dev g++ ffmpeg
-RUN pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+RUN apt update; apt install -y git libopencv-dev g++ ffmpeg
+RUN pip install comfy-cli
+RUN yes | comfy --workspace=/ComfyUI install --nvidia --version latest --cuda-version 11.8
+RUN pip install --upgrade torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+RUN comfy tracking disable
 
-RUN curl -sL -o - https://github.com/comfyanonymous/ComfyUI/archive/refs/tags/v0.3.62.tar.gz | tar zxvf - && mv /ComfyUI-0.3.62 /ComfyUI
-RUN pip install -r /ComfyUI/requirements.txt
-
-WORKDIR /ComfyUI/custom_nodes/
-RUN pip install gitpython onnxruntime
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager comfyui-manager/;pip install -r comfyui-manager/requirements.txt
-RUN git clone https://github.com/ServiceStack/comfy-asset-downloader.git comfy-asset-downloader/
-RUN git clone https://github.com/kijai/ComfyUI-DepthAnythingV2.git ComfyUI-DepthAnythingV2/;pip install -r ComfyUI-DepthAnythingV2/requirements.txt
-RUN git clone https://github.com/spacepxl/ComfyUI-Depth-Pro.git ComfyUI-Depth-Pro/;pip install -r ComfyUI-Depth-Pro/requirements.txt
-RUN git clone https://github.com/Gourieff/ComfyUI-ReActor.git ComfyUI-ReActor/;pip install -r ComfyUI-ReActor/requirements.txt
-RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git ComfyUI-VideoHelperSuite/;pip install -r ComfyUI-VideoHelperSuite/requirements.txt
-RUN git clone https://github.com/mit-han-lab/ComfyUI-nunchaku nunchaku_nodes/
+RUN pip install gitpython onnxruntime nunchaku
+RUN pip install https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.1/nunchaku-1.0.1+torch2.10-cp312-cp312-linux_x86_64.whl
+RUN comfy node install comfy-asset-downloader
+RUN comfy node install ComfyUI-DepthAnythingV2
+RUN comfy node install ComfyUI-Depth-Pro
+RUN comfy node install ComfyUI-ReActor
+RUN comfy node install ComfyUI-VideoHelperSuite
+RUN comfy node registry-install ComfyUI-nunchaku
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
