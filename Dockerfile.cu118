@@ -7,13 +7,11 @@ RUN pip install --upgrade torch torchvision torchaudio --index-url https://downl
 RUN comfy tracking disable
 
 RUN pip install gitpython onnxruntime
-RUN pip install https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.1/nunchaku-1.0.1+torch2.10-cp312-cp312-linux_x86_64.whl
 RUN comfy node install comfy-asset-downloader
 RUN comfy node install ComfyUI-DepthAnythingV2
 RUN comfy node install ComfyUI-Depth-Pro
 RUN comfy node install ComfyUI-ReActor
 RUN comfy node install ComfyUI-VideoHelperSuite
-RUN comfy node registry-install ComfyUI-nunchaku
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
