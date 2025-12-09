@@ -14,6 +14,21 @@ services:
         reservations:
           devices:
             - capabilities: [ gpu ]
+  rocm-minimal:
+    build:
+      context: .
+      dockerfile: Dockerfile.rocm-minimal
+      tags:
+        - l125/comfyui-for-dify:0.3.3-rocm-minimal
+    ports:
+      - 8188:8188
+    volumes:
+      - ./models:/ComfyUI/models
+      - ./output:/ComfyUI/output
+      - ./user:/ComfyUI/user
+    devices:
+      - /dev/kfd
+      - /dev/dri
   cu118:
     build:
       context: .
