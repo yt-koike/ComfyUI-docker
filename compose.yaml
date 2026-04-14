@@ -1,14 +1,24 @@
 services:
-  minimal:
+  cuda-minimal:
     build:
-      context: .
-      dockerfile: Dockerfile.minimal
+      dockerfile_inline: |
+        FROM docker.io/python:3.12-slim
+        RUN apt update; apt install -y git && apt-get clean && rm -rf /var/lib/apt/lists/*
+        RUN pip install comfy-cli comfyui-manager
+        RUN yes | comfy --workspace=/ComfyUI install --nvidia --version v0.19.0
+        RUN comfy tracking disable
+        RUN comfy node install comfy-asset-downloader
+        RUN echo 'mkdir -p /ComfyUI/models/{checkpoints,diffusers,loras,upscale_models,clip,diffusion_models,photomaker,vae,clip_vision,embeddings,style_models,vae_approx,configs,gligen,text_encoders,controlnet,hypernetworks,unet}; exec "$@"' > /entrypoint.sh
+        ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+        CMD ["comfy", "launch", "--", "--listen"]
       tags:
-        - l125/comfyui-for-dify:0.3.3-minimal
+        - l125/comfyui-for-dify:0.3.6-cuda-minimal
     volumes:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
       - ./user:/ComfyUI/user
+    ports:
+      - 8188:8188
     deploy:
       resources:
         reservations:
@@ -16,10 +26,18 @@ services:
             - capabilities: [ gpu ]
   rocm-minimal:
     build:
-      context: .
-      dockerfile: Dockerfile.rocm-minimal
+      dockerfile_inline: |
+        FROM docker.io/python:3.12-slim
+        RUN apt update; apt install -y git && apt-get clean && rm -rf /var/lib/apt/lists/*
+        RUN pip install comfy-cli comfyui-manager
+        RUN yes | comfy --workspace=/ComfyUI install --amd --version v0.19.0
+        RUN comfy tracking disable
+        RUN comfy node install comfy-asset-downloader
+        RUN echo 'mkdir -p /ComfyUI/models/{checkpoints,diffusers,loras,upscale_models,clip,diffusion_models,photomaker,vae,clip_vision,embeddings,style_models,vae_approx,configs,gligen,text_encoders,controlnet,hypernetworks,unet}; exec "$@"' > /entrypoint.sh
+        ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+        CMD ["comfy", "launch", "--", "--listen"]
       tags:
-        - l125/comfyui-for-dify:0.3.3-rocm-minimal
+        - l125/comfyui-for-dify:0.3.4-rocm-minimal
     ports:
       - 8188:8188
     volumes:
@@ -31,29 +49,51 @@ services:
       - /dev/dri
   cu118:
     build:
-      context: .
-      dockerfile: Dockerfile.cu118
+      dockerfile_inline: |
+        FROM docker.io/python:3.12-slim
+        RUN apt update; apt install -y git libopencv-dev g++ ffmpeg && apt-get clean && rm -rf /var/lib/apt/lists/*
+        RUN pip install comfy-cli comfyui-manager gitpython onnxruntime
+        RUN yes | comfy --workspace=/ComfyUI install --nvidia --version v0.19.0 --cuda-version 11.8
+        RUN comfy tracking disable
+        RUN comfy node install comfy-asset-downloader ComfyUI-DepthAnythingV2 ComfyUI-Depth-Pro ComfyUI-ReActor ComfyUI-VideoHelperSuite
+        RUN echo 'mkdir -p /ComfyUI/models/{checkpoints,diffusers,loras,upscale_models,clip,diffusion_models,photomaker,vae,clip_vision,embeddings,style_models,vae_approx,configs,gligen,text_encoders,controlnet,hypernetworks,unet}; exec "$@"' > /entrypoint.sh
+        ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+        CMD ["python3", "/ComfyUI/main.py", "--listen"]
       tags:
-        - l125/comfyui-for-dify:0.3.3-cu118
+        - l125/comfyui-for-dify:0.3.4-cu118
     volumes:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
       - ./user:/ComfyUI/user
+    ports:
+      - 8188:8188
     deploy:
       resources:
         reservations:
           devices:
             - capabilities: [ gpu ]
-  cu129:
+  # cu128 is no longer recommended. See https://github.com/Comfy-Org/ComfyUI/pull/12666
+  cu130:
     build:
       context: .
-      dockerfile: Dockerfile.cu129
+      dockerfile_inline: |
+        FROM docker.io/python:3.12-slim
+        RUN apt update; apt install -y git libopencv-dev g++ ffmpeg && apt-get clean && rm -rf /var/lib/apt/lists/*
+        RUN pip install comfy-cli comfyui-manager gitpython onnxruntime
+        RUN yes | comfy --workspace=/ComfyUI install --nvidia --version v0.19.0 --cuda-version 13.0
+        RUN comfy tracking disable
+        RUN comfy node install comfy-asset-downloader ComfyUI-DepthAnythingV2 ComfyUI-Depth-Pro ComfyUI-ReActor ComfyUI-VideoHelperSuite
+        RUN echo 'mkdir -p /ComfyUI/models/{checkpoints,diffusers,loras,upscale_models,clip,diffusion_models,photomaker,vae,clip_vision,embeddings,style_models,vae_approx,configs,gligen,text_encoders,controlnet,hypernetworks,unet}; exec "$@"' > /entrypoint.sh
+        ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+        CMD ["python3", "/ComfyUI/main.py", "--listen"]
       tags:
-        - l125/comfyui-for-dify:0.3.3-cu129
+        - l125/comfyui-for-dify:0.3.4-cu130
     volumes:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
       - ./user:/ComfyUI/user
+    ports:
+      - 8188:8188
     deploy:
       resources:
         reservations:
@@ -62,13 +102,25 @@ services:
   cpu:
     build:
       context: .
-      dockerfile: Dockerfile.cpu
+      dockerfile_inline: |
+        FROM docker.io/python:3.12-slim
+        RUN ln -snf /usr/share/zoneinfo/UTC /etc/localtime && echo UTC > /etc/timezone
+        RUN apt-get update && apt-get install -y git libopencv-dev g++ ffmpeg && apt-get clean && rm -rf /var/lib/apt/lists/*
+        RUN pip install comfy-cli comfyui-manager gitpython onnxruntime
+        RUN yes | comfy --workspace=/ComfyUI install --cpu --version v0.19.0
+        RUN comfy tracking disable
+        RUN comfy node install comfy-asset-downloader ComfyUI-DepthAnythingV2 ComfyUI-Depth-Pro ComfyUI-ReActor ComfyUI-VideoHelperSuite
+        RUN echo "mkdir -p /ComfyUI/models/{checkpoints,diffusers,loras,upscale_models,clip,diffusion_models,photomaker,vae,clip_vision,embeddings,style_models,vae_approx,configs,gligen,text_encoders,controlnet,hypernetworks,unet}; exec \"$@\"" > /entrypoint.sh
+        ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+        CMD ["python3", "/ComfyUI/main.py", "--listen", "--cpu"]
       tags:
-        - l125/comfyui-for-dify:0.3.3-cpu
+        - l125/comfyui-for-dify:0.3.4-cpu
     volumes:
       - ./models:/ComfyUI/models
       - ./output:/ComfyUI/output
       - ./user:/ComfyUI/user
+    ports:
+      - 8188:8188
     deploy:
       resources:
         reservations:
